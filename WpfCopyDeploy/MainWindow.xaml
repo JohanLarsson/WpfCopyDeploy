@@ -1,12 +1,81 @@
-﻿<Window x:Class="WpfCopyDeploy.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfCopyDeploy"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿<Window
+    x:Class="WpfCopyDeploy.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
+    xmlns:local="clr-namespace:WpfCopyDeploy"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:ViewModel />
+    </Window.DataContext>
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="Source">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding Source, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding OpenSourceCommand}"
+                        Content="..." />
+                </Grid>
+                <ItemsControl
+                    Grid.Row="1"
+                    ItemsSource="{Binding SourceFiles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:CopyFile}">
+                            <TextBlock Text="{Binding Source.Name}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </GroupBox>
+        <Button
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Content="&gt;&gt;" Command="{Binding CopyFilesCommand}" />
+        <GroupBox Grid.Column="2" Header="Target">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding Target, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
+                    <Button
+                        Grid.Column="1"
+                        Command="{Binding OpenTargetCommand}"
+                        Content="..." />
+                </Grid>
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding TargetFiles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type io:FileInfo}">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
