@@ -112,12 +112,19 @@
         {
             foreach (var copyFile in this.sourceFiles)
             {
-                if (copyFile.Target.Exists)
+                try
                 {
-                    copyFile.Target.Delete();
-                }
+                    if (copyFile.Target.Exists)
+                    {
+                        copyFile.Target.Delete();
+                    }
 
-                File.Move(copyFile.Source.FullName, copyFile.Target.FullName);
+                    File.Move(copyFile.Source.FullName, copyFile.Target.FullName);
+                }
+                catch (IOException)
+                {
+                    // Just swallowing here. Update will show that the file was not copied.
+                }
             }
 
             this.Update();
