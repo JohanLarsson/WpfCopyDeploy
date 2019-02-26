@@ -27,10 +27,10 @@
             }
         }
 
-        public static FileInfo CreateFile(this DirectoryInfo dir, string fileName)
+        public static FileInfo CreateFile(this DirectoryInfo dir, string fileName, string content = null)
         {
             var file = new FileInfo(Path.Combine(dir.FullName, fileName));
-            File.WriteAllText(file.FullName, string.Empty);
+            File.WriteAllText(file.FullName, content ?? string.Empty);
             return file;
         }
     }
