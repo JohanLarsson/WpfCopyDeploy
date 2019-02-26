@@ -46,7 +46,7 @@
         [TestCase("App.exe.config")]
         [TestCase("App.pdb")]
         [TestCase("Foo.dll")]
-        public void WhenFileInSourceOnly(string fileName)
+        public void WhenSourceOnly(string fileName)
         {
             var vm = new ViewModel();
             var source = Directory.CreateSubdirectory("Source");
@@ -64,7 +64,7 @@
 
         [TestCase("App.exe")]
         [TestCase("Foo.dll")]
-        public void WhenFileInSourceAndTarget(string fileName)
+        public void WhenBackingUp(string fileName)
         {
             var vm = new ViewModel();
             var source = Directory.CreateSubdirectory("Source");

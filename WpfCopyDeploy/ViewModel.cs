@@ -19,7 +19,7 @@
             this.SourceAndTargetDirectory = new SourceAndTargetDirectory(Settings.SourceDirectory, Settings.TargetDirectory);
             this.SourceFiles = new ReadOnlyObservableCollection<SourceFile>(this.sourceFiles);
             this.TargetFiles = new ReadOnlyObservableCollection<FileInfo>(this.targetFiles);
-            this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.sourceFiles.Any());
+            this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.sourceFiles.Any(x => x.HasDiff));
             this.SourceAndTargetDirectory.PropertyChanged += (_, __) => this.Update();
             this.Update();
         }
@@ -83,33 +83,36 @@
         {
             foreach (var copyFile in this.sourceFiles)
             {
-                try
+                if (copyFile.HasDiff)
                 {
-                    if (copyFile.Target.Exists)
+                    try
                     {
-                        var backupTarget = new FileInfo(copyFile.Target.FullName.Replace(this.SourceAndTargetDirectory.Target.FullName, BackUpDir().FullName));
-                        if (backupTarget.Exists)
+                        if (copyFile.Target.Exists)
                         {
-                            backupTarget.Delete();
-                        }
-                        else if (backupTarget.Directory?.Exists == false)
-                        {
-                            backupTarget.Directory.Create();
+                            var backupTarget = new FileInfo(copyFile.Target.FullName.Replace(this.SourceAndTargetDirectory.Target.FullName, BackUpDir().FullName));
+                            if (backupTarget.Exists)
+                            {
+                                backupTarget.Delete();
+                            }
+                            else if (backupTarget.Directory?.Exists == false)
+                            {
+                                backupTarget.Directory.Create();
+                            }
+
+                            File.Move(copyFile.Target.FullName, backupTarget.FullName);
                         }
 
-                        File.Move(copyFile.Target.FullName, backupTarget.FullName);
+                        if (copyFile.Target.Directory?.Exists == false)
+                        {
+                            copyFile.Target.Directory.Create();
+                        }
+
+                        File.Copy(copyFile.Source.FullName, copyFile.Target.FullName);
                     }
-
-                    if (!copyFile.Target.Directory.Exists)
+                    catch (IOException)
                     {
-                        copyFile.Target.Directory.Create();
+                        // Just swallowing here. Update will show that the file was not copied.
                     }
-
-                    File.Copy(copyFile.Source.FullName, copyFile.Target.FullName);
-                }
-                catch (IOException)
-                {
-                    // Just swallowing here. Update will show that the file was not copied.
                 }
             }
 

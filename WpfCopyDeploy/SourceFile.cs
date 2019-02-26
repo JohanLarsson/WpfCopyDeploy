@@ -18,17 +18,14 @@
 
         public FileInfo Target { get; }
 
+        public bool HasDiff => !this.Target.Exists ||
+                               this.Source.LastWriteTimeUtc != this.Target.LastWriteTimeUtc;
+
         public static bool TryCreate(FileInfo source, DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, out SourceFile result)
         {
             var target = new FileInfo(source.FullName.Replace(sourceDirectory.FullName, targetDirectory.FullName));
             if (target.Exists)
             {
-                if (source.LastWriteTimeUtc == target.LastWriteTimeUtc)
-                {
-                    result = null;
-                    return false;
-                }
-
                 result = new SourceFile(source, target);
                 return true;
             }
