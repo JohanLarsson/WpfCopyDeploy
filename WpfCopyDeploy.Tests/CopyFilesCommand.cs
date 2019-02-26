@@ -68,6 +68,7 @@
             var sourceFile = source.CreateFile(fileName, "Source");
             var target = Directory.CreateSubdirectory("Target");
             var targetFile = target.CreateFile(fileName, "Target");
+            targetFile.LastWriteTimeUtc = DateTime.Now.AddDays(-1);
             vm.SourceAndTargetDirectory.Source = source;
             vm.SourceAndTargetDirectory.Target = target;
             Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
