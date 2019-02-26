@@ -2,11 +2,20 @@
 {
     using System;
     using System.IO;
+    using System.Reflection;
     using NUnit.Framework;
 
     public class CopyFilesCommand
     {
         private static readonly DirectoryInfo Directory = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests"));
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            // ReSharper disable once PossibleNullReferenceException
+            typeof(AppData).GetField("SettingsFile", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly)
+                           .SetValue(null, new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfCopyDeploy.Tests", "Settings.xml")));
+        }
 
         [SetUp]
         public void SetUp()
