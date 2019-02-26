@@ -54,6 +54,19 @@
                     {
                         this.sourceFiles.Add(copyFile);
                     }
+
+                    if (sourceFile.Extension == ".dll" ||
+                        sourceFile.Extension == ".exe")
+                    {
+                        foreach (var satellite in source.EnumerateFiles($"{Path.GetFileNameWithoutExtension(sourceFile.FullName)}.resources.dll", SearchOption.AllDirectories))
+                        {
+                            if (satellite.Directory?.Parent?.FullName == source.FullName &&
+                                SourceFile.TryCreate(satellite, source, target, out copyFile))
+                            {
+                                this.sourceFiles.Add(copyFile);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -68,25 +81,28 @@
 
         private void CopyFiles(object _)
         {
-            var backupDir = new DirectoryInfo(Path.Combine(this.SourceAndTargetDirectory.Target.FullName, $"Backup_{DateTime.Today.ToShortDateString()}"));
-            if (!backupDir.Exists)
-            {
-                backupDir.Create();
-            }
-
             foreach (var copyFile in this.sourceFiles)
             {
                 try
                 {
                     if (copyFile.Target.Exists)
                     {
-                        var backupTarget = copyFile.Target.FullName.Replace(this.SourceAndTargetDirectory.Target.FullName, backupDir.FullName);
-                        if (File.Exists(backupTarget))
+                        var backupTarget = new FileInfo(copyFile.Target.FullName.Replace(this.SourceAndTargetDirectory.Target.FullName, BackUpDir().FullName));
+                        if (backupTarget.Exists)
                         {
-                            File.Delete(backupTarget);
+                            backupTarget.Delete();
+                        }
+                        else if (backupTarget.Directory?.Exists == false)
+                        {
+                            backupTarget.Directory.Create();
                         }
 
-                        File.Move(copyFile.Target.FullName, backupTarget);
+                        File.Move(copyFile.Target.FullName, backupTarget.FullName);
+                    }
+
+                    if (!copyFile.Target.Directory.Exists)
+                    {
+                        copyFile.Target.Directory.Create();
                     }
 
                     File.Copy(copyFile.Source.FullName, copyFile.Target.FullName);
@@ -98,6 +114,17 @@
             }
 
             this.Update();
+
+            DirectoryInfo BackUpDir()
+            {
+                var dir = new DirectoryInfo(Path.Combine(this.SourceAndTargetDirectory.Target.FullName, $"Backup_{DateTime.Today.ToShortDateString()}"));
+                if (!dir.Exists)
+                {
+                    dir.Create();
+                }
+
+                return dir;
+            }
         }
     }
 }
