@@ -29,9 +29,9 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding Source, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
+                    <TextBox Text="{Binding SourceAndTargetDirectory.Source, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
                     <Button Grid.Column="1"
-                            Command="{Binding OpenSourceCommand}"
+                            Command="{Binding SourceAndTargetDirectory.OpenSourceCommand}"
                             Content="..." />
                 </Grid>
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding SourceFiles}">
@@ -58,9 +58,9 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding Target, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
+                    <TextBox Text="{Binding SourceAndTargetDirectory.Target, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
                     <Button Grid.Column="1"
-                            Command="{Binding OpenTargetCommand}"
+                            Command="{Binding SourceAndTargetDirectory.OpenTargetCommand}"
                             Content="..." />
                 </Grid>
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding TargetFiles}">

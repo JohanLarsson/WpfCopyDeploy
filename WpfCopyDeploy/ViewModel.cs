@@ -9,8 +9,6 @@
 
     public class ViewModel : INotifyPropertyChanged
     {
-        private DirectoryInfo source;
-        private DirectoryInfo target;
         private readonly ObservableCollection<SourceFile> sourceFiles = new ObservableCollection<SourceFile>();
         private readonly ObservableCollection<FileInfo> targetFiles = new ObservableCollection<FileInfo>();
 
@@ -18,9 +16,8 @@
         {
             this.SourceFiles = new ReadOnlyObservableCollection<SourceFile>(this.sourceFiles);
             this.TargetFiles = new ReadOnlyObservableCollection<FileInfo>(this.targetFiles);
-            this.OpenSourceCommand = new RelayCommand(this.OpenSource);
-            this.OpenTargetCommand = new RelayCommand(this.OpenTarget);
             this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.sourceFiles.Any());
+            this.SourceAndTargetDirectory.PropertyChanged += (_, __) => this.Update();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -29,43 +26,9 @@
 
         public ReadOnlyObservableCollection<FileInfo> TargetFiles { get; }
 
-        public ICommand OpenSourceCommand { get; }
-
-        public ICommand OpenTargetCommand { get; }
-
         public ICommand CopyFilesCommand { get; }
 
-        public DirectoryInfo Source
-        {
-            get => this.source;
-            set
-            {
-                if (ReferenceEquals(value, this.source))
-                {
-                    return;
-                }
-
-                this.source = value;
-                this.OnPropertyChanged();
-                this.Update();
-            }
-        }
-
-        public DirectoryInfo Target
-        {
-            get => this.target;
-            set
-            {
-                if (ReferenceEquals(value, this.target))
-                {
-                    return;
-                }
-
-                this.target = value;
-                this.OnPropertyChanged();
-                this.Update();
-            }
-        }
+        public SourceAndTargetDirectory SourceAndTargetDirectory { get; } = new SourceAndTargetDirectory();
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -76,34 +39,16 @@
         {
             this.sourceFiles.Clear();
             this.targetFiles.Clear();
-            if (this.source != null &&
-                this.target != null)
+            if (this.SourceAndTargetDirectory.Source is DirectoryInfo source &&
+                this.SourceAndTargetDirectory.Target is DirectoryInfo target)
             {
-                foreach (var sourceFile in this.source.EnumerateFiles())
+                foreach (var sourceFile in source.EnumerateFiles())
                 {
-                    if (SourceFile.TryCreate(sourceFile, this.target, out var copyFile))
+                    if (SourceFile.TryCreate(sourceFile, target, out var copyFile))
                     {
                         this.sourceFiles.Add(copyFile);
                     }
                 }
-            }
-        }
-
-        private void OpenSource(object _)
-        {
-            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-            if (dialog.ShowDialog() == true)
-            {
-                this.Source = new DirectoryInfo(dialog.SelectedPath);
-            }
-        }
-
-        private void OpenTarget(object _)
-        {
-            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-            if (dialog.ShowDialog() == true)
-            {
-                this.Target = new DirectoryInfo(dialog.SelectedPath);
             }
         }
 
