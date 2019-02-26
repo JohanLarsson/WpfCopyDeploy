@@ -17,15 +17,3 @@ steps:
 - task: VSTest@2
   displayName: 'Test'
 
-- task: CopyFiles@2
-  displayName: 'Stage image assert errors.'
-  inputs:
-    sourceFolder: $env:temp
-    contents: '*.png'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish image assert errors.'
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'Images'
