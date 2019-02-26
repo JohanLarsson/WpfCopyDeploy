@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
     using NUnit.Framework;
 
     public class CopyFilesCommand
@@ -68,11 +69,14 @@
             var sourceFile = source.CreateFile(fileName, "Source");
             var target = Directory.CreateSubdirectory("Target");
             var targetFile = target.CreateFile(fileName, "Target");
+            // Needed on CI for some reason.
             targetFile.LastWriteTimeUtc = DateTime.Now.AddDays(-1);
             vm.SourceAndTargetDirectory.Source = source;
             vm.SourceAndTargetDirectory.Target = target;
             Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
             vm.CopyFilesCommand.Execute(null);
+            // Needed on CI for some reason.
+            Thread.Sleep(TimeSpan.FromMilliseconds(100));
             Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
             Assert.AreEqual("Source", File.ReadAllText(targetFile.FullName));
             var backupFile = new FileInfo(Path.Combine(target.EnumerateDirectories().Single().FullName, fileName));
