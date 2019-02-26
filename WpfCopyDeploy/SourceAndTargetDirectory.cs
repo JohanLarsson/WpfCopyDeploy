@@ -10,14 +10,25 @@
         private DirectoryInfo source;
         private DirectoryInfo target;
 
-        public SourceAndTargetDirectory()
+        public SourceAndTargetDirectory(string sourceDirectory, string targetDirectory)
         {
+            this.source = DirOrNull(sourceDirectory);
+            this.target = DirOrNull(targetDirectory);
             this.OpenSourceCommand = new RelayCommand(this.OpenSource);
             this.OpenTargetCommand = new RelayCommand(this.OpenTarget);
+
+            DirectoryInfo DirOrNull(string path)
+            {
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    return null;
+                }
+
+                return new DirectoryInfo(path);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
 
         public ICommand OpenSourceCommand { get; }
 

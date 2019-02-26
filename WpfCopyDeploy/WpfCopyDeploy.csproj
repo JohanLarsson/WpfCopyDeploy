@@ -51,6 +51,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppData.cs" />
     <Compile Include="SourceAndTargetDirectory.cs" />
     <Compile Include="SourceFile.cs" />
     <Compile Include="DirectoryInfoStringConverter.cs" />

@@ -15,7 +15,7 @@
         public event PropertyChangedEventHandler PropertyChanged;
 
         public FileInfo Source { get; }
-        
+
         public FileInfo Target { get; }
 
         public static bool TryCreate(FileInfo source, DirectoryInfo targetDirectory, out SourceFile result)

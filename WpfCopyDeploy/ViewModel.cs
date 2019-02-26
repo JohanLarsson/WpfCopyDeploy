@@ -9,15 +9,18 @@
 
     public class ViewModel : INotifyPropertyChanged
     {
+        private static readonly AppData.Settings Settings = AppData.Read();
         private readonly ObservableCollection<SourceFile> sourceFiles = new ObservableCollection<SourceFile>();
         private readonly ObservableCollection<FileInfo> targetFiles = new ObservableCollection<FileInfo>();
 
         public ViewModel()
         {
+            this.SourceAndTargetDirectory = new SourceAndTargetDirectory(Settings.SourceDirectory, Settings.TargetDirectory);
             this.SourceFiles = new ReadOnlyObservableCollection<SourceFile>(this.sourceFiles);
             this.TargetFiles = new ReadOnlyObservableCollection<FileInfo>(this.targetFiles);
             this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.sourceFiles.Any());
             this.SourceAndTargetDirectory.PropertyChanged += (_, __) => this.Update();
+            this.Update();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -28,7 +31,7 @@
 
         public ICommand CopyFilesCommand { get; }
 
-        public SourceAndTargetDirectory SourceAndTargetDirectory { get; } = new SourceAndTargetDirectory();
+        public SourceAndTargetDirectory SourceAndTargetDirectory { get; }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -49,6 +52,14 @@
                         this.sourceFiles.Add(copyFile);
                     }
                 }
+            }
+
+            if (this.SourceAndTargetDirectory.Source?.FullName != Settings.SourceDirectory ||
+                this.SourceAndTargetDirectory.Target?.FullName != Settings.TargetDirectory)
+            {
+                Settings.SourceDirectory = this.SourceAndTargetDirectory.Source?.FullName;
+                Settings.TargetDirectory = this.SourceAndTargetDirectory.Target?.FullName;
+                AppData.Save(Settings);
             }
         }
 
