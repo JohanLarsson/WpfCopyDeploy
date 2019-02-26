@@ -51,7 +51,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CopyFile.cs" />
+    <Compile Include="SourceFile.cs" />
     <Compile Include="DirectoryInfoStringConverter.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModel.cs" />

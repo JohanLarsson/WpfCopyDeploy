@@ -4,9 +4,9 @@
     using System.IO;
     using System.Runtime.CompilerServices;
 
-    public class CopyFile : INotifyPropertyChanged
+    public class SourceFile : INotifyPropertyChanged
     {
-        public CopyFile(FileInfo source, FileInfo target)
+        public SourceFile(FileInfo source, FileInfo target)
         {
             this.Source = source;
             this.Target = target;
@@ -18,7 +18,7 @@
         
         public FileInfo Target { get; }
 
-        public static bool TryCreate(FileInfo source, DirectoryInfo targetDirectory, out CopyFile result)
+        public static bool TryCreate(FileInfo source, DirectoryInfo targetDirectory, out SourceFile result)
         {
             var target = new FileInfo(Path.Combine(targetDirectory.FullName, source.Name));
             if (target.Exists)
@@ -29,11 +29,11 @@
                     return false;
                 }
 
-                result = new CopyFile(source, target);
+                result = new SourceFile(source, target);
                 return true;
             }
 
-            result = new CopyFile(source, target);
+            result = new SourceFile(source, target);
             return true;
         }
 

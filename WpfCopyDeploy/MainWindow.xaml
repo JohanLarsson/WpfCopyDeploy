@@ -36,7 +36,7 @@
                 </Grid>
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding SourceFiles}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:CopyFile}">
+                        <DataTemplate DataType="{x:Type local:SourceFile}">
                             <TextBlock Text="{Binding Source.Name}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

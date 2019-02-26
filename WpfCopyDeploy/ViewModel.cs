@@ -1,6 +1,5 @@
 ﻿namespace WpfCopyDeploy
 {
-    using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.IO;
@@ -12,12 +11,12 @@
     {
         private DirectoryInfo source;
         private DirectoryInfo target;
-        private readonly ObservableCollection<CopyFile> sourceFiles = new ObservableCollection<CopyFile>();
+        private readonly ObservableCollection<SourceFile> sourceFiles = new ObservableCollection<SourceFile>();
         private readonly ObservableCollection<FileInfo> targetFiles = new ObservableCollection<FileInfo>();
 
         public ViewModel()
         {
-            this.SourceFiles = new ReadOnlyObservableCollection<CopyFile>(this.sourceFiles);
+            this.SourceFiles = new ReadOnlyObservableCollection<SourceFile>(this.sourceFiles);
             this.TargetFiles = new ReadOnlyObservableCollection<FileInfo>(this.targetFiles);
             this.OpenSourceCommand = new RelayCommand(this.OpenSource);
             this.OpenTargetCommand = new RelayCommand(this.OpenTarget);
@@ -26,7 +25,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ReadOnlyObservableCollection<CopyFile> SourceFiles { get; }
+        public ReadOnlyObservableCollection<SourceFile> SourceFiles { get; }
 
         public ReadOnlyObservableCollection<FileInfo> TargetFiles { get; }
 
@@ -82,7 +81,7 @@
             {
                 foreach (var sourceFile in this.source.EnumerateFiles())
                 {
-                    if (CopyFile.TryCreate(sourceFile, this.target, out var copyFile))
+                    if (SourceFile.TryCreate(sourceFile, this.target, out var copyFile))
                     {
                         this.sourceFiles.Add(copyFile);
                     }
