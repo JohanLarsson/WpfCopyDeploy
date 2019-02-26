@@ -47,6 +47,7 @@
                 VerticalAlignment="Center"
                 Command="{Binding CopyFilesCommand}"
                 Content="&gt;&gt;" />
+
         <GroupBox Grid.Column="2" Header="Target">
             <Grid>
                 <Grid.RowDefinitions>

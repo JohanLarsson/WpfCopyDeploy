@@ -1,5 +1,6 @@
 ﻿namespace WpfCopyDeploy
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.IO;
@@ -63,15 +64,27 @@
             }
         }
 
-        private void CopyFiles(object obj)
+        private void CopyFiles(object _)
         {
+            var backupDir = new DirectoryInfo(Path.Combine(this.SourceAndTargetDirectory.Target.FullName, $"Backup_{DateTime.Today.ToShortDateString()}"));
+            if (!backupDir.Exists)
+            {
+                backupDir.Create();
+            }
+
             foreach (var copyFile in this.sourceFiles)
             {
                 try
                 {
                     if (copyFile.Target.Exists)
                     {
-                        copyFile.Target.Delete();
+                        var backupTarget = copyFile.Target.FullName.Replace(this.SourceAndTargetDirectory.Target.FullName, backupDir.FullName);
+                        if (File.Exists(backupTarget))
+                        {
+                            File.Delete(backupTarget);
+                        }
+
+                        File.Move(copyFile.Target.FullName, backupTarget);
                     }
 
                     File.Move(copyFile.Source.FullName, copyFile.Target.FullName);
