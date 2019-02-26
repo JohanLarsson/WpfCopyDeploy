@@ -41,7 +41,9 @@
             }
         }
 
+#pragma warning disable INPC001 // The class has mutable properties and should implement INotifyPropertyChanged.
         public class Settings
+#pragma warning restore INPC001 // The class has mutable properties and should implement INotifyPropertyChanged.
         {
             public string SourceDirectory { get; set; }
 

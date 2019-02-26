@@ -18,9 +18,9 @@
 
         public FileInfo Target { get; }
 
-        public static bool TryCreate(FileInfo source, DirectoryInfo targetDirectory, out SourceFile result)
+        public static bool TryCreate(FileInfo source, DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, out SourceFile result)
         {
-            var target = new FileInfo(Path.Combine(targetDirectory.FullName, source.Name));
+            var target = new FileInfo(source.FullName.Replace(sourceDirectory.FullName, targetDirectory.FullName));
             if (target.Exists)
             {
                 if (source.LastWriteTimeUtc == target.LastWriteTimeUtc)

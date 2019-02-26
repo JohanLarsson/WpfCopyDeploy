@@ -44,11 +44,13 @@
             this.sourceFiles.Clear();
             this.targetFiles.Clear();
             if (this.SourceAndTargetDirectory.Source is DirectoryInfo source &&
-                this.SourceAndTargetDirectory.Target is DirectoryInfo target)
+                source.Exists &&
+                this.SourceAndTargetDirectory.Target is DirectoryInfo target &&
+                target.Exists)
             {
                 foreach (var sourceFile in source.EnumerateFiles())
                 {
-                    if (SourceFile.TryCreate(sourceFile, target, out var copyFile))
+                    if (SourceFile.TryCreate(sourceFile, source, target, out var copyFile))
                     {
                         this.sourceFiles.Add(copyFile);
                     }
@@ -87,7 +89,7 @@
                         File.Move(copyFile.Target.FullName, backupTarget);
                     }
 
-                    File.Move(copyFile.Source.FullName, copyFile.Target.FullName);
+                    File.Copy(copyFile.Source.FullName, copyFile.Target.FullName);
                 }
                 catch (IOException)
                 {
