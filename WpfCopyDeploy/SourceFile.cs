@@ -23,7 +23,7 @@
             var target = new FileInfo(Path.Combine(targetDirectory.FullName, source.Name));
             if (target.Exists)
             {
-                if (source.CreationTimeUtc == target.CreationTimeUtc)
+                if (source.LastWriteTimeUtc == target.LastWriteTimeUtc)
                 {
                     result = null;
                     return false;
