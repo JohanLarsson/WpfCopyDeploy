@@ -58,7 +58,7 @@
     <Compile Include="DirectoryWatcher.cs" />
     <Compile Include="Scroll.cs" />
     <Compile Include="Directories.cs" />
-    <Compile Include="SourceFile.cs" />
+    <Compile Include="Files.cs" />
     <Compile Include="Converters\DirectoryInfoStringConverter.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModel.cs" />

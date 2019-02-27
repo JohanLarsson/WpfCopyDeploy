@@ -39,6 +39,8 @@
             {
                 Serializer.Serialize(stream, settings);
             }
+
+            SettingsFile.Refresh();
         }
 
 #pragma warning disable INPC001 // The class has mutable properties and should implement INotifyPropertyChanged.

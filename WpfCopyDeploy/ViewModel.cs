@@ -5,25 +5,33 @@
     using System.ComponentModel;
     using System.IO;
     using System.Linq;
+    using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
 
     public sealed class ViewModel : INotifyPropertyChanged, IDisposable
     {
-        private static readonly AppData.Settings Settings = AppData.Read();
-        private readonly ObservableCollection<SourceFile> files = new ObservableCollection<SourceFile>();
+        private readonly AppData.Settings settings = AppData.Read();
+        private readonly ObservableCollection<Files> files = new ObservableCollection<Files>();
+        private readonly object gate = new object();
         private readonly IDisposable disposable;
 
+
         public ViewModel()
+            :this(DispatcherScheduler.Current)
         {
-            this.Directories = new Directories(Settings.SourceDirectory, Settings.TargetDirectory);
-            this.Files = new ReadOnlyObservableCollection<SourceFile>(this.files);
-            this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.files.Any(x => x.HasDiff));
+        }
+
+        public ViewModel(IScheduler scheduler)
+        {
+            this.Directories = new Directories(this.settings.SourceDirectory, this.settings.TargetDirectory);
+            this.Files = new ReadOnlyObservableCollection<Files>(this.files);
+            this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.files.Any(x => x.ShouldCopy));
             this.disposable = Observable.Merge(
                           Observe(this.Directories.Source),
                           Observe(this.Directories.Target))
-                      .ObserveOnDispatcher()
+                      .ObserveOn(scheduler)
                       .StartWith(EventArgs.Empty).Subscribe(_ => this.Update());
 
             IObservable<EventArgs> Observe(DirectoryWatcher watcher)
@@ -37,7 +45,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ReadOnlyObservableCollection<SourceFile> Files { get; }
+        public ReadOnlyObservableCollection<Files> Files { get; }
 
         public ICommand CopyFilesCommand { get; }
 
@@ -56,92 +64,61 @@
 
         private void Update()
         {
-            this.files.Clear();
-            if (this.Directories.Source.Directory is DirectoryInfo source &&
-                source.Exists &&
-                this.Directories.Target.Directory is DirectoryInfo target &&
-                target.Exists)
+            lock (this.gate)
             {
-                foreach (var sourceFile in source.EnumerateFiles())
+                this.files.Clear();
+                if (this.Directories.Source.Directory is DirectoryInfo source &&
+                    source.Exists &&
+                    this.Directories.Target.Directory is DirectoryInfo target &&
+                    target.Exists)
                 {
-                    if (SourceFile.TryCreate(sourceFile, source, target, out var copyFile))
+                    foreach (var sourceFile in source.EnumerateFiles())
                     {
-                        this.files.Add(copyFile);
-                    }
-
-                    if (sourceFile.Extension == ".dll" ||
-                        sourceFile.Extension == ".exe")
-                    {
-                        foreach (var satellite in source.EnumerateFiles($"{Path.GetFileNameWithoutExtension(sourceFile.FullName)}.resources.dll", SearchOption.AllDirectories))
+                        if (WpfCopyDeploy.Files.TryCreate(sourceFile, source, target, out var copyFile))
                         {
-                            if (satellite.Directory?.Parent?.FullName == source.FullName &&
-                                SourceFile.TryCreate(satellite, source, target, out copyFile))
+                            this.files.Add(copyFile);
+                        }
+
+                        if (sourceFile.Extension == ".dll" ||
+                            sourceFile.Extension == ".exe")
+                        {
+                            foreach (var satellite in source.EnumerateFiles($"{Path.GetFileNameWithoutExtension(sourceFile.FullName)}.resources.dll", SearchOption.AllDirectories))
                             {
-                                this.files.Add(copyFile);
+                                if (satellite.Directory?.Parent?.FullName == source.FullName &&
+                                    WpfCopyDeploy.Files.TryCreate(satellite, source, target, out copyFile))
+                                {
+                                    this.files.Add(copyFile);
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            if (this.Directories.Source.Directory?.FullName != Settings.SourceDirectory ||
-                this.Directories.Target.Directory?.FullName != Settings.TargetDirectory)
-            {
-                Settings.SourceDirectory = this.Directories.Source.Directory?.FullName;
-                Settings.TargetDirectory = this.Directories.Target.Directory?.FullName;
-                AppData.Save(Settings);
+                if (this.Directories.Source.Directory?.FullName != this.settings.SourceDirectory ||
+                    this.Directories.Target.Directory?.FullName != this.settings.TargetDirectory)
+                {
+                    this.settings.SourceDirectory = this.Directories.Source.Directory?.FullName;
+                    this.settings.TargetDirectory = this.Directories.Target.Directory?.FullName;
+                    AppData.Save(this.settings);
+                }
             }
         }
 
         private void CopyFiles(object _)
         {
-            foreach (var copyFile in this.files)
+            lock (this.gate)
             {
-                if (copyFile.HasDiff)
+                foreach (var file in this.files)
                 {
-                    try
+                    if (file.ShouldCopy)
                     {
-                        if (copyFile.Target.Exists)
-                        {
-                            var backupTarget = new FileInfo(copyFile.Target.FullName.Replace(this.Directories.Target.Directory.FullName, BackUpDir().FullName));
-                            if (backupTarget.Exists)
-                            {
-                                backupTarget.Delete();
-                            }
-                            else if (backupTarget.Directory?.Exists == false)
-                            {
-                                backupTarget.Directory.Create();
-                            }
-
-                            File.Move(copyFile.Target.FullName, backupTarget.FullName);
-                        }
-
-                        if (copyFile.Target.Directory?.Exists == false)
-                        {
-                            copyFile.Target.Directory.Create();
-                        }
-
-                        File.Copy(copyFile.Source.FullName, copyFile.Target.FullName);
-                    }
-                    catch (IOException)
-                    {
-                        // Just swallowing here. Update will show that the file was not copied.
+                        file.Copy();
                     }
                 }
+
             }
 
             this.Update();
-
-            DirectoryInfo BackUpDir()
-            {
-                var dir = new DirectoryInfo(Path.Combine(this.Directories.Target.Directory.FullName, $"Backup_{DateTime.Today.ToShortDateString()}"));
-                if (!dir.Exists)
-                {
-                    dir.Create();
-                }
-
-                return dir;
-            }
         }
     }
 }

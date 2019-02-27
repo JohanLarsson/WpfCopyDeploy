@@ -39,10 +39,16 @@
                               VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Files}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type local:SourceFile}">
-                                <Border Background="{Binding HasDiff, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=LightGreen, WhenFalse=Transparent}}">
+                            <DataTemplate DataType="{x:Type local:Files}">
+                                <Border Background="{Binding ShouldCopy, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=LightGreen, WhenFalse=Transparent}}">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{Binding CopyCommand}" Header="Copy" />
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Foreground="{Binding HasDiff, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="+" />
+                                        <TextBlock Foreground="{Binding ShouldCopy, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="+" />
                                         <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
                                     </StackPanel>
                                 </Border>
@@ -78,7 +84,7 @@
                               VerticalScrollBarVisibility="Auto">
                     <ItemsControl ItemsSource="{Binding Files}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type local:SourceFile}">
+                            <DataTemplate DataType="{x:Type local:Files}">
                                 <TextBlock Foreground="{Binding Target.Exists, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="{Binding Source.Name, Mode=OneTime}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
