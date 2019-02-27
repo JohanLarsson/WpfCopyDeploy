@@ -1,6 +1,7 @@
 ﻿namespace WpfCopyDeploy
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.IO;
@@ -19,7 +20,7 @@
 
 
         public ViewModel()
-            :this(DispatcherScheduler.Current)
+            : this(DispatcherScheduler.Current)
         {
         }
 
@@ -72,25 +73,12 @@
                     this.Directories.Target.Directory is DirectoryInfo target &&
                     target.Exists)
                 {
-                    foreach (var sourceFile in source.EnumerateFiles())
+                    foreach (var sourceFile in GetFiles(source))
                     {
-                        if (WpfCopyDeploy.Files.TryCreate(sourceFile, source, target, out var copyFile))
-                        {
-                            this.files.Add(copyFile);
-                        }
-
-                        if (sourceFile.Extension == ".dll" ||
-                            sourceFile.Extension == ".exe")
-                        {
-                            foreach (var satellite in source.EnumerateFiles($"{Path.GetFileNameWithoutExtension(sourceFile.FullName)}.resources.dll", SearchOption.AllDirectories))
-                            {
-                                if (satellite.Directory?.Parent?.FullName == source.FullName &&
-                                    WpfCopyDeploy.Files.TryCreate(satellite, source, target, out copyFile))
-                                {
-                                    this.files.Add(copyFile);
-                                }
-                            }
-                        }
+                        this.files.Add(new Files(
+                            sourceFile,
+                            new FileInfo(sourceFile.FullName.Replace(source.FullName, target.FullName)),
+                            target));
                     }
                 }
 
@@ -100,6 +88,26 @@
                     this.settings.SourceDirectory = this.Directories.Source.Directory?.FullName;
                     this.settings.TargetDirectory = this.Directories.Target.Directory?.FullName;
                     AppData.Save(this.settings);
+                }
+            }
+
+            IEnumerable<FileInfo> GetFiles(DirectoryInfo directory)
+            {
+                foreach (var file in directory.EnumerateFiles())
+                {
+                    yield return file;
+
+                    if (file.Extension == ".dll" ||
+                        file.Extension == ".exe")
+                    {
+                        foreach (var satellite in directory.EnumerateFiles($"{Path.GetFileNameWithoutExtension(file.FullName)}.resources.dll", SearchOption.AllDirectories))
+                        {
+                            if (satellite.Directory?.Parent?.FullName == directory.FullName)
+                            {
+                                yield return satellite;
+                            }
+                        }
+                    }
                 }
             }
         }

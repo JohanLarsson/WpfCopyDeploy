@@ -29,19 +29,6 @@
         public bool ShouldCopy => !this.Target.Exists ||
                                 this.Source.LastWriteTimeUtc != this.Target.LastWriteTimeUtc;
 
-        public static bool TryCreate(FileInfo source, DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, out Files result)
-        {
-            var target = new FileInfo(source.FullName.Replace(sourceDirectory.FullName, targetDirectory.FullName));
-            if (target.Exists)
-            {
-                result = new Files(source, target, targetDirectory);
-                return true;
-            }
-
-            result = new Files(source, target, targetDirectory);
-            return true;
-        }
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
