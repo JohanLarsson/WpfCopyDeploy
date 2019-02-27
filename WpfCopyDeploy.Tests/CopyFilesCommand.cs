@@ -37,8 +37,8 @@
             var vm = new ViewModel();
             var source = Directory.CreateSubdirectory("Source");
             var target = Directory.CreateSubdirectory("Target");
-            vm.SourceAndTargetDirectory.Source = source;
-            vm.SourceAndTargetDirectory.Target = target;
+            vm.Directories.Source = source;
+            vm.Directories.Target = target;
             Assert.AreEqual(false, vm.CopyFilesCommand.CanExecute(null));
         }
 
@@ -52,8 +52,8 @@
             var source = Directory.CreateSubdirectory("Source");
             var sourceFile = source.CreateFile(fileName);
             var target = Directory.CreateSubdirectory("Target");
-            vm.SourceAndTargetDirectory.Source = source;
-            vm.SourceAndTargetDirectory.Target = target;
+            vm.Directories.Source = source;
+            vm.Directories.Target = target;
 
             Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
             vm.CopyFilesCommand.Execute(null);
@@ -71,8 +71,8 @@
             var sourceFile = source.CreateFile(fileName, "Source");
             var target = Directory.CreateSubdirectory("Target");
             var targetFile = target.CreateFile(fileName, "Target");
-            vm.SourceAndTargetDirectory.Source = source;
-            vm.SourceAndTargetDirectory.Target = target;
+            vm.Directories.Source = source;
+            vm.Directories.Target = target;
 
             Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
             vm.CopyFilesCommand.Execute(null);
@@ -93,8 +93,8 @@
             source.CreateSubdirectory("en").CreateFile(resourceName, "en");
             source.CreateSubdirectory("sv").CreateFile(resourceName, "sv");
             var target = Directory.CreateSubdirectory("Target");
-            vm.SourceAndTargetDirectory.Source = source;
-            vm.SourceAndTargetDirectory.Target = target;
+            vm.Directories.Source = source;
+            vm.Directories.Target = target;
 
             Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
             vm.CopyFilesCommand.Execute(null);
@@ -117,8 +117,8 @@
             var target = Directory.CreateSubdirectory("Target");
             target.CreateSubdirectory("en").CreateFile(resourceName, "old en");
             target.CreateSubdirectory("sv").CreateFile(resourceName, "old sv");
-            vm.SourceAndTargetDirectory.Source = source;
-            vm.SourceAndTargetDirectory.Target = target;
+            vm.Directories.Source = source;
+            vm.Directories.Target = target;
 
             Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
             vm.CopyFilesCommand.Execute(null);

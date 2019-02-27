@@ -5,15 +5,12 @@
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
 
-    public class SourceAndTargetDirectory : INotifyPropertyChanged
+    public sealed class Directories : INotifyPropertyChanged, System.IDisposable
     {
-        private DirectoryInfo source;
-        private DirectoryInfo target;
-
-        public SourceAndTargetDirectory(string sourceDirectory, string targetDirectory)
+        public Directories(string sourceDirectory, string targetDirectory)
         {
-            this.source = DirOrNull(sourceDirectory);
-            this.target = DirOrNull(targetDirectory);
+            this.Source = new DirectoryWatcher(DirOrNull(sourceDirectory));
+            this.Target = new DirectoryWatcher(DirOrNull(targetDirectory));
             this.OpenSourceCommand = new RelayCommand(this.OpenSource);
             this.OpenTargetCommand = new RelayCommand(this.OpenTarget);
 
@@ -34,37 +31,17 @@
 
         public ICommand OpenTargetCommand { get; }
 
-        public DirectoryInfo Source
-        {
-            get => this.source;
-            set
-            {
-                if (ReferenceEquals(value, this.source))
-                {
-                    return;
-                }
+        public DirectoryWatcher Source { get; }
 
-                this.source = value;
-                this.OnPropertyChanged();
-            }
+        public DirectoryWatcher Target { get; }
+
+        public void Dispose()
+        {
+            this.Source.Dispose();
+            this.Target.Dispose();
         }
 
-        public DirectoryInfo Target
-        {
-            get => this.target;
-            set
-            {
-                if (ReferenceEquals(value, this.target))
-                {
-                    return;
-                }
-
-                this.target = value;
-                this.OnPropertyChanged();
-            }
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -74,7 +51,7 @@
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             if (dialog.ShowDialog() == true)
             {
-                this.Source = new DirectoryInfo(dialog.SelectedPath);
+                this.Source.Directory = new DirectoryInfo(dialog.SelectedPath);
             }
         }
 
@@ -83,7 +60,7 @@
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             if (dialog.ShowDialog() == true)
             {
-                this.Target = new DirectoryInfo(dialog.SelectedPath);
+                this.Target.Directory = new DirectoryInfo(dialog.SelectedPath);
             }
         }
     }

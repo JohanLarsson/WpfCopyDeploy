@@ -29,15 +29,15 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding SourceAndTargetDirectory.Source, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
+                    <TextBox Text="{Binding Directories.Source.Directory, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
                     <Button Grid.Column="1"
-                            Command="{Binding SourceAndTargetDirectory.OpenSourceCommand}"
+                            Command="{Binding Directories.OpenSourceCommand}"
                             Content="..." />
                 </Grid>
                 <ScrollViewer Grid.Row="1"
                               local:Scroll.Group="1"
                               VerticalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding SourceFiles}">
+                    <ItemsControl ItemsSource="{Binding Files}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:SourceFile}">
                                 <Border Background="{Binding HasDiff, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=LightGreen, WhenFalse=Transparent}}">
@@ -68,15 +68,15 @@
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox Text="{Binding SourceAndTargetDirectory.Target, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
+                    <TextBox Text="{Binding Directories.Target.Directory, Converter={x:Static local:DirectoryInfoStringConverter.Default}}" />
                     <Button Grid.Column="1"
-                            Command="{Binding SourceAndTargetDirectory.OpenTargetCommand}"
+                            Command="{Binding Directories.OpenTargetCommand}"
                             Content="..." />
                 </Grid>
                 <ScrollViewer Grid.Row="1"
                               local:Scroll.Group="1"
                               VerticalScrollBarVisibility="Auto">
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding SourceFiles}">
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Files}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:SourceFile}">
                                 <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />

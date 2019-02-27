@@ -5,6 +5,7 @@
     using System.IO;
     using System.Windows.Data;
 
+    [ValueConversion(typeof(DirectoryInfo), typeof(string))]
     public class DirectoryInfoStringConverter : IValueConverter
     {
         public static readonly DirectoryInfoStringConverter Default = new DirectoryInfoStringConverter();
