@@ -34,18 +34,22 @@
                             Command="{Binding SourceAndTargetDirectory.OpenSourceCommand}"
                             Content="..." />
                 </Grid>
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding SourceFiles}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:SourceFile}">
-                            <Border Background="{Binding HasDiff, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=LightGreen, WhenFalse=Transparent}}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Foreground="{Binding HasDiff, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="+" />
-                                    <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <ScrollViewer Grid.Row="1"
+                              local:Scroll.Group="1"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding SourceFiles}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:SourceFile}">
+                                <Border Background="{Binding HasDiff, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=LightGreen, WhenFalse=Transparent}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Foreground="{Binding HasDiff, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="+" />
+                                        <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Grid>
         </GroupBox>
         <Button Grid.Column="1"
@@ -69,13 +73,17 @@
                             Command="{Binding SourceAndTargetDirectory.OpenTargetCommand}"
                             Content="..." />
                 </Grid>
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding SourceFiles}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type local:SourceFile}">
-                            <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <ScrollViewer Grid.Row="1"
+                              local:Scroll.Group="1"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding SourceFiles}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type local:SourceFile}">
+                                <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Grid>
         </GroupBox>
     </Grid>

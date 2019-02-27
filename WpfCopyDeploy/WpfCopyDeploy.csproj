@@ -55,6 +55,7 @@
     <Compile Include="AppData.cs" />
     <Compile Include="Converters\BoolToBrushConverter.cs" />
     <Compile Include="Converters\BoolToStringConverter.cs" />
+    <Compile Include="Scroll.cs" />
     <Compile Include="SourceAndTargetDirectory.cs" />
     <Compile Include="SourceFile.cs" />
     <Compile Include="Converters\DirectoryInfoStringConverter.cs" />
