@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Reactive.Concurrency;
     using System.Reflection;
+    using System.Threading;
     using NUnit.Framework;
 
     public class CopyFilesCommand
@@ -99,6 +100,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromMilliseconds(200));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(targetFile.FullName));
@@ -149,6 +151,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromMilliseconds(200));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));
