@@ -76,10 +76,10 @@
                 <ScrollViewer Grid.Row="1"
                               local:Scroll.Group="1"
                               VerticalScrollBarVisibility="Auto">
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Files}">
+                    <ItemsControl ItemsSource="{Binding Files}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:SourceFile}">
-                                <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
+                                <TextBlock Foreground="{Binding Target.Exists, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="{Binding Source.Name, Mode=OneTime}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
