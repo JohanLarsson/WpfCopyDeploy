@@ -40,15 +40,26 @@
                     <ItemsControl ItemsSource="{Binding Files}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:Files}">
-                                <Border Background="{Binding ShouldCopy, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=LightGreen, WhenFalse=Transparent}}">
+                                <Border Background="{Binding ShouldCopy,
+                                                             Converter={local:BoolToBrushConverter WhenTrue=LightGreen,
+                                                                                                   WhenFalse=Transparent}}"
+                                        Visibility="{Binding Source.Exists,
+                                                             Mode=OneWay,
+                                                             Converter={local:BoolToVisibilityConverter WhenTrue=Visible,
+                                                                                                        WhenFalse=Hidden}}">
                                     <Border.ContextMenu>
                                         <ContextMenu>
-                                            <MenuItem Command="{Binding CopyCommand}" Header="Copy" />
+                                            <MenuItem Command="{Binding CopyCommand}"
+                                                      Header="Copy" />
                                         </ContextMenu>
                                     </Border.ContextMenu>
 
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Foreground="{Binding ShouldCopy, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="+" />
+                                        <TextBlock Text="+"
+                                                   Visibility="{Binding ShouldCopy,
+                                                                        Mode=OneWay,
+                                                                        Converter={local:BoolToVisibilityConverter WhenTrue=Visible,
+                                                                                                                   WhenFalse=Hidden}}" />
                                         <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
                                     </StackPanel>
                                 </Border>
@@ -63,7 +74,8 @@
                 Command="{Binding CopyFilesCommand}"
                 Content="&gt;&gt;" />
 
-        <GroupBox Grid.Column="2" Header="Target">
+        <GroupBox Grid.Column="2"
+                  Header="Target">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -85,7 +97,29 @@
                     <ItemsControl ItemsSource="{Binding Files}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:Files}">
-                                <TextBlock Foreground="{Binding Target.Exists, Mode=OneWay, Converter={local:BoolToBrushConverter WhenTrue=Black, WhenFalse=Transparent}}" Text="{Binding Source.Name, Mode=OneTime}" />
+                                <Border Background="{Binding ShouldDelete,
+                                                             Converter={local:BoolToBrushConverter WhenTrue=LightCoral,
+                                                                                                   WhenFalse=Transparent}}"
+                                        Visibility="{Binding Target.Exists,
+                                                             Mode=OneWay,
+                                                             Converter={local:BoolToVisibilityConverter WhenTrue=Visible,
+                                                                                                        WhenFalse=Hidden}}">
+                                    <Border.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{Binding DeleteCommand}"
+                                                      Header="Delete" />
+                                        </ContextMenu>
+                                    </Border.ContextMenu>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="-"
+                                                   Visibility="{Binding ShouldDelete,
+                                                                        Mode=OneWay,
+                                                                        Converter={local:BoolToVisibilityConverter WhenTrue=Visible,
+                                                                                                                   WhenFalse=Hidden}}" />
+                                        <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

@@ -80,6 +80,18 @@
                             new FileInfo(sourceFile.FullName.Replace(source.FullName, target.FullName)),
                             target));
                     }
+
+
+                    foreach (var targetFile in GetFiles(target))
+                    {
+                        if (this.files.All(x => x.Target.FullName != targetFile.FullName))
+                        {
+                            this.files.Add(new Files(
+                                new FileInfo(targetFile.FullName.Replace(target.FullName, source.FullName)),
+                                targetFile,
+                                target));
+                        }
+                    }
                 }
 
                 if (this.Directories.Source.Directory?.FullName != this.settings.SourceDirectory ||

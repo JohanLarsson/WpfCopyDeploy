@@ -14,6 +14,7 @@
             this.Target = target;
             this.TargetDirectory = targetDirectory;
             this.CopyCommand = new RelayCommand(_ => this.Copy(), _ => this.ShouldCopy);
+            this.DeleteCommand = new RelayCommand(_ => this.Delete(), _ => this.ShouldDelete);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -26,8 +27,13 @@
 
         public ICommand CopyCommand { get; }
 
-        public bool ShouldCopy => !this.Target.Exists ||
-                                this.Source.LastWriteTimeUtc != this.Target.LastWriteTimeUtc;
+        public ICommand DeleteCommand { get; }
+
+        public bool ShouldCopy => this.Source.Exists &&
+                                  (!this.Target.Exists ||
+                                   this.Source.LastWriteTimeUtc != this.Target.LastWriteTimeUtc);
+
+        public bool ShouldDelete => !this.Source.Exists;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -38,21 +44,7 @@
         {
             try
             {
-                if (this.Target.Exists)
-                {
-                    var backupTarget = new FileInfo(this.Target.FullName.Replace(this.TargetDirectory.FullName, BackUpDir().FullName));
-                    if (backupTarget.Exists)
-                    {
-                        backupTarget.Delete();
-                    }
-                    else if (backupTarget.Directory?.Exists == false)
-                    {
-                        backupTarget.Directory.Create();
-                    }
-
-                    File.Move(this.Target.FullName, backupTarget.FullName);
-                }
-
+                this.Delete();
                 if (this.Target.Directory?.Exists == false)
                 {
                     this.Target.Directory.Create();
@@ -64,6 +56,25 @@
             {
                 // Just swallowing here. Update will show that the file was not copied.
             }
+        }
+
+        private void Delete()
+        {
+            if (this.Target.Exists)
+            {
+                var backupTarget = new FileInfo(this.Target.FullName.Replace(this.TargetDirectory.FullName, BackUpDir().FullName));
+                if (backupTarget.Exists)
+                {
+                    backupTarget.Delete();
+                }
+                else if (backupTarget.Directory?.Exists == false)
+                {
+                    backupTarget.Directory.Create();
+                }
+
+                File.Move(this.Target.FullName, backupTarget.FullName);
+            }
+
 
             DirectoryInfo BackUpDir()
             {

@@ -100,7 +100,6 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromMilliseconds(200));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(targetFile.FullName));
@@ -151,7 +150,6 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromMilliseconds(200));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));

@@ -55,6 +55,7 @@
     <Compile Include="AppData.cs" />
     <Compile Include="Converters\BoolToBrushConverter.cs" />
     <Compile Include="Converters\BoolToStringConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="DirectoryWatcher.cs" />
     <Compile Include="Scroll.cs" />
     <Compile Include="Directories.cs" />
