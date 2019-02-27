@@ -58,11 +58,11 @@
             }
         }
 
-        private void Delete()
+        internal void Delete()
         {
             if (this.Target.Exists)
             {
-                var backupTarget = new FileInfo(this.Target.FullName.Replace(this.TargetDirectory.FullName, BackUpDir().FullName));
+                var backupTarget = new FileInfo(Path.Combine(this.Target.Directory.FullName.Replace(this.TargetDirectory.FullName, BackUpDir().FullName), this.Target.Name));
                 if (backupTarget.Exists)
                 {
                     backupTarget.Delete();

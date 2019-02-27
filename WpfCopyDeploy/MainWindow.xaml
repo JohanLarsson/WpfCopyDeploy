@@ -5,7 +5,7 @@
         xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
         xmlns:local="clr-namespace:WpfCopyDeploy"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="MainWindow"
+        Title="WpfCopyDeploy"
         Width="800"
         Height="450"
         mc:Ignorable="d">
@@ -41,7 +41,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:Files}">
                                 <Border Background="{Binding ShouldCopy,
-                                                             Converter={local:BoolToBrushConverter WhenTrue=LightGreen,
+                                                             Converter={local:BoolToBrushConverter WhenTrue={StaticResource LightGreenBrush},
                                                                                                    WhenFalse=Transparent}}"
                                         Visibility="{Binding Source.Exists,
                                                              Mode=OneWay,
@@ -69,10 +69,24 @@
                 </ScrollViewer>
             </Grid>
         </GroupBox>
-        <Button Grid.Column="1"
-                VerticalAlignment="Center"
-                Command="{Binding CopyFilesCommand}"
-                Content="&gt;&gt;" />
+
+        <StackPanel Grid.Column="1"
+                    VerticalAlignment="Center">
+            <Button Margin="0,20"
+                    Background="{StaticResource LightGreenBrush}"
+                    Command="{Binding CopyFilesCommand}"
+                    Content="&gt;&gt;" />
+
+            <Button Background="{StaticResource LightRedBrush}"
+                    Command="{Binding DeleteFilesCommand}">
+                <Button.Content>
+                    <Path Width="20"
+                          Data="F1M53,33L52,91 60,91 61,33 53,33z M34,33L34,91 43,91 43,33 34,33z M17,33L18,91 26,91 24,33 17,33z M10,24L68,24C70,24,72,26,72,29L68,96C68,98,66,100,63,100L14,100C12,100,10,98,10,96L6,29C6,26,8,24,10,24z M3,11L74,11C76,11 77,14 77,16 78,19 78,21 78,21L0,21C0,21 0,19 1,16 1,14 2,11 3,11z M32,0L46,0C47,0 50,3 50,4 50,6 47,9 46,9L32,9C31,9 28,6 28,4 28,3 31,0 32,0z"
+                          Fill="Black"
+                          Stretch="Uniform" />
+                </Button.Content>
+            </Button>
+        </StackPanel>
 
         <GroupBox Grid.Column="2"
                   Header="Target">
@@ -98,7 +112,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type local:Files}">
                                 <Border Background="{Binding ShouldDelete,
-                                                             Converter={local:BoolToBrushConverter WhenTrue=LightCoral,
+                                                             Converter={local:BoolToBrushConverter WhenTrue={StaticResource LightRedBrush},
                                                                                                    WhenFalse=Transparent}}"
                                         Visibility="{Binding Target.Exists,
                                                              Mode=OneWay,
@@ -110,14 +124,13 @@
                                                       Header="Delete" />
                                         </ContextMenu>
                                     </Border.ContextMenu>
-
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="-"
                                                    Visibility="{Binding ShouldDelete,
                                                                         Mode=OneWay,
                                                                         Converter={local:BoolToVisibilityConverter WhenTrue=Visible,
                                                                                                                    WhenFalse=Hidden}}" />
-                                        <TextBlock Text="{Binding Source.Name, Mode=OneTime}" />
+                                        <TextBlock Text="{Binding Target.Name, Mode=OneTime}" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

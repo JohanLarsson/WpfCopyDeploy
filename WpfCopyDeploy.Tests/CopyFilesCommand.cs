@@ -5,10 +5,8 @@
     using System.Linq;
     using System.Reactive.Concurrency;
     using System.Reflection;
-    using System.Threading;
     using NUnit.Framework;
-
-    public class CopyFilesCommand
+    public class CopyFilesCommandTests
     {
         private static readonly DirectoryInfo Directory = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests"));
         private static readonly FileInfo SettingsFile = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfCopyDeploy.Tests", "Settings.xml"));
@@ -34,20 +32,6 @@
         public void TearDown()
         {
             Directory.DeleteRecursive();
-        }
-
-        [Test]
-        public void RestoresFromSettings()
-        {
-            var source = Directory.CreateSubdirectory("Source");
-            var target = Directory.CreateSubdirectory("Target");
-            AppData.Save(new AppData.Settings { SourceDirectory = source.FullName, TargetDirectory = target.FullName });
-            using (var vm = new ViewModel(Scheduler.Immediate))
-            {
-                Assert.AreEqual(source.FullName, vm.Directories.Source.Directory.FullName);
-                Assert.AreEqual(target.FullName, vm.Directories.Target.Directory.FullName);
-                Assert.AreEqual(false, vm.CopyFilesCommand.CanExecute(null));
-            }
         }
 
         [Test]

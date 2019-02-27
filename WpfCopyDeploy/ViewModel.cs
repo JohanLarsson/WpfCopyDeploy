@@ -29,6 +29,7 @@
             this.Directories = new Directories(this.settings.SourceDirectory, this.settings.TargetDirectory);
             this.Files = new ReadOnlyObservableCollection<Files>(this.files);
             this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.files.Any(x => x.ShouldCopy));
+            this.DeleteFilesCommand = new RelayCommand(this.DeleteFiles, _ => this.files.Any(x => x.ShouldDelete));
             this.disposable = Observable.Merge(
                           Observe(this.Directories.Source),
                           Observe(this.Directories.Target))
@@ -49,6 +50,8 @@
         public ReadOnlyObservableCollection<Files> Files { get; }
 
         public ICommand CopyFilesCommand { get; }
+
+        public ICommand DeleteFilesCommand { get; }
 
         public Directories Directories { get; }
 
@@ -133,6 +136,23 @@
                     if (file.ShouldCopy)
                     {
                         file.Copy();
+                    }
+                }
+
+            }
+
+            this.Update();
+        }
+
+        private void DeleteFiles(object _)
+        {
+            lock (this.gate)
+            {
+                foreach (var file in this.files)
+                {
+                    if (file.ShouldDelete)
+                    {
+                        file.Delete();
                     }
                 }
 
