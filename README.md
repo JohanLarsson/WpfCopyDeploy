@@ -4,4 +4,5 @@
 
 Small helper for x-copy deployments.
 
-![image](https://user-images.githubusercontent.com/1640096/53444536-b3159500-3a0e-11e9-9988-aab37919532b.png)
+![animation](https://user-images.githubusercontent.com/1640096/53497581-c96e3000-3aa4-11e9-95c4-505b1ccc5eb9.gif)
+
