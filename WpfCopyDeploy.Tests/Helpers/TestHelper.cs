@@ -47,6 +47,7 @@
             var file = new FileInfo(Path.Combine(dir.FullName, fileName));
             File.WriteAllText(file.FullName, content ?? string.Empty);
             Wait.ForIO();
+            System.Console.WriteLine("Created file: " + file.FullName);
             return file;
         }
     }
