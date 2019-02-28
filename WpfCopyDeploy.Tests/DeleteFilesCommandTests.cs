@@ -14,7 +14,7 @@
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            TestHelper.UseTempSettingsFile();
+            Settings.UseTemp();
         }
 
         [TearDown]
@@ -50,7 +50,7 @@
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());
@@ -68,13 +68,13 @@
                 var source = Directory.CreateSubdirectory("Source");
                 var target = Directory.CreateSubdirectory("Target");
                 target.CreateFile(fileName, "Target");
-                TestHelper.WaitForIO();
+                Wait.ForIO();
                 vm.Directories.Source.Directory = source;
                 vm.Directories.Target.Directory = target;
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());
@@ -82,11 +82,11 @@
                 Assert.AreEqual("Target", File.ReadAllText(backupFile.FullName));
 
                 target.CreateFile(fileName, "New Target");
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());

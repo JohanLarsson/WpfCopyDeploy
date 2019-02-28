@@ -14,7 +14,7 @@
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            TestHelper.UseTempSettingsFile();
+            Settings.UseTemp();
         }
 
         [TearDown]
@@ -52,7 +52,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 Assert.AreEqual(true, File.Exists(sourceFile.FullName));
                 Assert.AreEqual(true, File.Exists(Path.Combine(target.FullName, fileName)));
@@ -74,7 +74,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(targetFile.FullName));
@@ -99,7 +99,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));
@@ -126,7 +126,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                TestHelper.WaitForIO();
+                Wait.ForIO();
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));
