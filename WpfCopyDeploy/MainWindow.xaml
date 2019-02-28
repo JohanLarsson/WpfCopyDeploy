@@ -74,8 +74,15 @@
                     VerticalAlignment="Center">
             <Button Margin="0,20"
                     Background="{StaticResource LightGreenBrush}"
-                    Command="{Binding CopyFilesCommand}"
-                    Content="&gt;&gt;" />
+                    Command="{Binding CopyFilesCommand}">
+                <Button.Content>
+                    <Path Width="20"
+                          Data="M0,0 L5,5 0,10 M5,0 L10,5 5,10"
+                          Stretch="Uniform"
+                          Stroke="Black"
+                          StrokeThickness="2" />
+                </Button.Content>
+            </Button>
 
             <Button Background="{StaticResource LightRedBrush}"
                     Command="{Binding DeleteFilesCommand}">
