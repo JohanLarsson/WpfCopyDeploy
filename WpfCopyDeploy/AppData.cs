@@ -11,6 +11,7 @@
 
         public static Settings Read()
         {
+            SettingsFile.Refresh();
             if (SettingsFile.Exists)
             {
                 using (var stream = SettingsFile.OpenRead())
@@ -24,6 +25,7 @@
 
         public static void Save(Settings settings)
         {
+            SettingsFile.Refresh();
             if (SettingsFile.Exists)
             {
                 SettingsFile.Delete();
@@ -39,8 +41,6 @@
             {
                 Serializer.Serialize(stream, settings);
             }
-
-            SettingsFile.Refresh();
         }
 
 #pragma warning disable INPC001 // The class has mutable properties and should implement INotifyPropertyChanged.

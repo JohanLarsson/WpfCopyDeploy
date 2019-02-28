@@ -4,16 +4,31 @@
 
     public static class DirectoryInfoExt
     {
-        public static void CreateIfNotExists(this DirectoryInfo dir)
+        public static DirectoryInfo CreateIfNotExists(this DirectoryInfo dir)
         {
             dir.Refresh();
             if (!dir.Exists)
             {
                 dir.Create();
             }
+
+            return dir;
         }
 
-        public static void DeleteRecursive(this DirectoryInfo dir)
+        public static void ClearRecursive(this DirectoryInfo dir)
+        {
+            foreach (var file in dir.EnumerateFiles())
+            {
+                file.Delete();
+            }
+
+            foreach (var subDir in dir.EnumerateDirectories())
+            {
+                subDir.DeleteRecursive();
+            }
+        }
+
+            public static void DeleteRecursive(this DirectoryInfo dir)
         {
             dir.Refresh();
             if (dir.Exists)

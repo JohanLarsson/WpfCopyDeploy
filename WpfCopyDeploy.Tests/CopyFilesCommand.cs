@@ -1,6 +1,5 @@
 ﻿namespace WpfCopyDeploy.Tests
 {
-    using System;
     using System.IO;
     using System.Linq;
     using System.Reactive.Concurrency;
@@ -8,8 +7,8 @@
     using NUnit.Framework;
     public class CopyFilesCommandTests
     {
-        private static readonly DirectoryInfo Directory = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests"));
-        private static readonly FileInfo SettingsFile = new FileInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WpfCopyDeploy.Tests", "Settings.xml"));
+        private static DirectoryInfo Directory => new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests")).CreateIfNotExists();
+        private static FileInfo SettingsFile => new FileInfo(Path.Combine(Directory.FullName, "Settings.xml"));
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -19,19 +18,10 @@
                            .SetValue(null, SettingsFile);
         }
 
-        [SetUp]
-        public void SetUp()
-        {
-            SettingsFile.Delete();
-            SettingsFile.Refresh();
-            Directory.DeleteRecursive();
-            Directory.CreateIfNotExists();
-        }
-
         [TearDown]
         public void TearDown()
         {
-            Directory.DeleteRecursive();
+            Directory.ClearRecursive();
         }
 
         [Test]
