@@ -6,7 +6,6 @@
 
     public class Wait
     {
-
         public static void ForIO()
         {
             if (Path.GetTempPath().StartsWith(@"C:\Users\VssAdministrator\AppData\Local\Temp"))

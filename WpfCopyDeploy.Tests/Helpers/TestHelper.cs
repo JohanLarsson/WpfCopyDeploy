@@ -46,6 +46,7 @@
         {
             var file = new FileInfo(Path.Combine(dir.FullName, fileName));
             File.WriteAllText(file.FullName, content ?? string.Empty);
+            Wait.ForIO();
             return file;
         }
     }

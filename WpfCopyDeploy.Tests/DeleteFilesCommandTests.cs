@@ -68,7 +68,6 @@
                 var source = Directory.CreateSubdirectory("Source");
                 var target = Directory.CreateSubdirectory("Target");
                 target.CreateFile(fileName, "Target");
-                Wait.ForIO();
                 vm.Directories.Source.Directory = source;
                 vm.Directories.Target.Directory = target;
 
@@ -82,7 +81,6 @@
                 Assert.AreEqual("Target", File.ReadAllText(backupFile.FullName));
 
                 target.CreateFile(fileName, "New Target");
-                Wait.ForIO();
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);

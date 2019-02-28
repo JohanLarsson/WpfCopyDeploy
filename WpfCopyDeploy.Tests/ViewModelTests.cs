@@ -49,7 +49,6 @@
 
                 CollectionAssert.IsEmpty(vm.Files);
                 source.CreateFile("App.exe");
-                Wait.ForIO();
 
                 Assert.AreEqual(source.FullName, vm.Directories.Source.Directory.FullName);
                 Assert.AreEqual(target.FullName, vm.Directories.Target.Directory.FullName);
