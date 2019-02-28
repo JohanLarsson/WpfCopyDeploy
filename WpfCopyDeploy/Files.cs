@@ -76,7 +76,6 @@
                 File.Move(this.Target.FullName, backupTarget.FullName);
             }
 
-
             DirectoryInfo BackUpDir()
             {
                 var dir = new DirectoryInfo(Path.Combine(this.TargetDirectory.FullName, $"Backup_{DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}"));

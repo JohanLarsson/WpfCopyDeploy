@@ -31,10 +31,12 @@
             this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.files.Any(x => x.ShouldCopy));
             this.DeleteFilesCommand = new RelayCommand(this.DeleteFiles, _ => this.files.Any(x => x.ShouldDelete));
             this.disposable = Observable.Merge(
-                          Observe(this.Directories.Source),
-                          Observe(this.Directories.Target))
-                      .ObserveOn(scheduler)
-                      .StartWith(EventArgs.Empty).Subscribe(_ => this.Update());
+                                            Observe(this.Directories.Source),
+                                            Observe(this.Directories.Target))
+                                        .Throttle(TimeSpan.FromMilliseconds(100))
+                                        .ObserveOn(scheduler)
+                                        .StartWith(EventArgs.Empty)
+                                        .Subscribe(_ => this.Update());
 
             IObservable<EventArgs> Observe(DirectoryWatcher watcher)
             {
