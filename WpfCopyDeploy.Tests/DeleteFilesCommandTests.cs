@@ -4,21 +4,17 @@
     using System.IO;
     using System.Linq;
     using System.Reactive.Concurrency;
-    using System.Reflection;
     using System.Threading;
     using NUnit.Framework;
 
     public class DeleteFilesCommandTests
     {
         private static readonly DirectoryInfo Directory = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests")).CreateIfNotExists();
-        private static readonly FileInfo SettingsFile = new FileInfo(Path.Combine(Directory.FullName, "Settings.xml"));
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            // ReSharper disable once PossibleNullReferenceException
-            typeof(AppData).GetField("SettingsFile", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly)
-                           .SetValue(null, SettingsFile);
+            TestHelper.UseTempSettingsFile();
         }
 
         [TearDown]
@@ -54,6 +50,7 @@
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());
@@ -76,6 +73,7 @@
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());
@@ -87,6 +85,7 @@
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());

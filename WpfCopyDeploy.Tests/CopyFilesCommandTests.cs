@@ -1,21 +1,20 @@
 ﻿namespace WpfCopyDeploy.Tests
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Reactive.Concurrency;
-    using System.Reflection;
+    using System.Threading;
     using NUnit.Framework;
+
     public class CopyFilesCommandTests
     {
         private static DirectoryInfo Directory => new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests")).CreateIfNotExists();
-        private static FileInfo SettingsFile => new FileInfo(Path.Combine(Directory.FullName, "Settings.xml"));
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            // ReSharper disable once PossibleNullReferenceException
-            typeof(AppData).GetField("SettingsFile", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly)
-                           .SetValue(null, SettingsFile);
+            TestHelper.UseTempSettingsFile();
         }
 
         [TearDown]
@@ -53,6 +52,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
                 Assert.AreEqual(true, File.Exists(sourceFile.FullName));
                 Assert.AreEqual(true, File.Exists(Path.Combine(target.FullName, fileName)));
@@ -74,6 +74,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(targetFile.FullName));
@@ -98,6 +99,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));
@@ -124,6 +126,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));

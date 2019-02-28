@@ -28,7 +28,8 @@
             get => this.watcher.EnableRaisingEvents ? new DirectoryInfo(this.watcher.Path) : null;
             set
             {
-                if (value is DirectoryInfo directory)
+                if (value is DirectoryInfo directory &&
+                    System.IO.Directory.Exists(directory.FullName))
                 {
                     this.watcher.Path = directory.FullName;
                     this.watcher.EnableRaisingEvents = true;
