@@ -126,6 +126,7 @@
                 vm.Directories.Source.Directory = source;
                 vm.Directories.Target.Directory = target;
 
+                Wait.ForIO();
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
                 Wait.ForIO();
