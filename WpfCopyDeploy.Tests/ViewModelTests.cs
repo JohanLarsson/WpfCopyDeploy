@@ -1,10 +1,8 @@
 ﻿namespace WpfCopyDeploy.Tests
 {
-    using System;
     using System.IO;
     using System.Linq;
     using System.Reactive.Concurrency;
-    using System.Threading;
     using NUnit.Framework;
 
     public class ViewModelTests

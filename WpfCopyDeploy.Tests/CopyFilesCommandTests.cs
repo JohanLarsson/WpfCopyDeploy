@@ -4,7 +4,6 @@
     using System.IO;
     using System.Linq;
     using System.Reactive.Concurrency;
-    using System.Threading;
     using NUnit.Framework;
 
     public class CopyFilesCommandTests
@@ -79,6 +78,8 @@
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(targetFile.FullName));
                 var backupFile = new FileInfo(Path.Combine(target.EnumerateDirectories().Single().FullName, fileName));
+                Assert.AreEqual("Backup_" + DateTime.Today.ToShortDateString(), backupFile.Directory.Name);
+                Assert.AreEqual(fileName, backupFile.Name);
                 Assert.AreEqual("Target", File.ReadAllText(backupFile.FullName));
             }
         }

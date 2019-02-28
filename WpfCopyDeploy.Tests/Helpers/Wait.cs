@@ -10,10 +10,11 @@
         {
             if (Path.GetTempPath().StartsWith(@"C:\Users\VssAdministrator\AppData\Local\Temp"))
             {
+                // We are running on devops.
                 Thread.Sleep(TimeSpan.FromSeconds(1));
             }
 
-            Thread.Sleep(TimeSpan.FromSeconds(0.1));
+            Thread.Sleep(TimeSpan.FromMilliseconds(20));
         }
     }
 }

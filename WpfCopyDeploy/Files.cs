@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel;
+    using System.Globalization;
     using System.IO;
     using System.Runtime.CompilerServices;
     using System.Windows.Input;
@@ -78,7 +79,7 @@
 
             DirectoryInfo BackUpDir()
             {
-                var dir = new DirectoryInfo(Path.Combine(this.TargetDirectory.FullName, $"Backup_{DateTime.Today.ToShortDateString()}"));
+                var dir = new DirectoryInfo(Path.Combine(this.TargetDirectory.FullName, $"Backup_{DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}"));
                 if (!dir.Exists)
                 {
                     dir.Create();
