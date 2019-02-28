@@ -52,7 +52,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 Assert.AreEqual(true, File.Exists(sourceFile.FullName));
                 Assert.AreEqual(true, File.Exists(Path.Combine(target.FullName, fileName)));
@@ -74,7 +74,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(targetFile.FullName));
@@ -99,7 +99,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));
@@ -126,7 +126,7 @@
 
                 Assert.AreEqual(true, vm.CopyFilesCommand.CanExecute(null));
                 vm.CopyFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 Assert.AreEqual("Source", File.ReadAllText(sourceFile.FullName));
                 Assert.AreEqual("Source", File.ReadAllText(Path.Combine(target.FullName, fileName)));

@@ -49,7 +49,7 @@
 
                 CollectionAssert.IsEmpty(vm.Files);
                 source.CreateFile("App.exe");
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 Assert.AreEqual(source.FullName, vm.Directories.Source.Directory.FullName);
                 Assert.AreEqual(target.FullName, vm.Directories.Target.Directory.FullName);

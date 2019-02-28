@@ -50,7 +50,7 @@
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());
@@ -73,7 +73,7 @@
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());
@@ -85,7 +85,7 @@
 
                 Assert.AreEqual(true, vm.DeleteFilesCommand.CanExecute(null));
                 vm.DeleteFilesCommand.Execute(null);
-                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+                Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 CollectionAssert.IsEmpty(source.EnumerateFiles());
                 CollectionAssert.IsEmpty(target.EnumerateFiles());
