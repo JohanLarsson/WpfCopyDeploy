@@ -60,6 +60,7 @@
     <Compile Include="Converters\BoolToStringConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="DirectoryWatcher.cs" />
+    <Compile Include="Wpf\Icon.cs" />
     <Compile Include="Wpf\Scroll.cs" />
     <Compile Include="Directories.cs" />
     <Compile Include="Files.cs" />

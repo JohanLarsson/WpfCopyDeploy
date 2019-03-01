@@ -2,7 +2,6 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
         xmlns:local="clr-namespace:WpfCopyDeploy"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="WpfCopyDeploy"
@@ -72,29 +71,15 @@
 
         <StackPanel Grid.Column="1"
                     VerticalAlignment="Center">
-            <Button Margin="0,20"
+            <Button local:Icon.Geometry="M0,0 L2,0 7,5 2,10 0,10 5,5 M5,0 L7,0 12,5 7,10 5,10 10,5"
                     Background="{StaticResource LightGreenBrush}"
                     Command="{Binding CopyFilesCommand}"
-                    Style="{StaticResource FlatButtonStyle}">
-                <Button.Content>
-                    <Path Width="20"
-                          Data="M0,0 L5,5 0,10 M5,0 L10,5 5,10"
-                          Stretch="Uniform"
-                          Stroke="Black"
-                          StrokeThickness="2" />
-                </Button.Content>
-            </Button>
+                    Style="{StaticResource FlatButtonStyle}" />
 
-            <Button Background="{StaticResource LightRedBrush}"
+            <Button local:Icon.Geometry="F1M53,33L52,91 60,91 61,33 53,33z M34,33L34,91 43,91 43,33 34,33z M17,33L18,91 26,91 24,33 17,33z M10,24L68,24C70,24,72,26,72,29L68,96C68,98,66,100,63,100L14,100C12,100,10,98,10,96L6,29C6,26,8,24,10,24z M3,11L74,11C76,11 77,14 77,16 78,19 78,21 78,21L0,21C0,21 0,19 1,16 1,14 2,11 3,11z M32,0L46,0C47,0 50,3 50,4 50,6 47,9 46,9L32,9C31,9 28,6 28,4 28,3 31,0 32,0z"
+                    Background="{StaticResource LightRedBrush}"
                     Command="{Binding DeleteFilesCommand}"
-                    Style="{StaticResource FlatButtonStyle}">
-                <Button.Content>
-                    <Path Width="20"
-                          Data="F1M53,33L52,91 60,91 61,33 53,33z M34,33L34,91 43,91 43,33 34,33z M17,33L18,91 26,91 24,33 17,33z M10,24L68,24C70,24,72,26,72,29L68,96C68,98,66,100,63,100L14,100C12,100,10,98,10,96L6,29C6,26,8,24,10,24z M3,11L74,11C76,11 77,14 77,16 78,19 78,21 78,21L0,21C0,21 0,19 1,16 1,14 2,11 3,11z M32,0L46,0C47,0 50,3 50,4 50,6 47,9 46,9L32,9C31,9 28,6 28,4 28,3 31,0 32,0z"
-                          Fill="Black"
-                          Stretch="Uniform" />
-                </Button.Content>
-            </Button>
+                    Style="{StaticResource FlatButtonStyle}" />
         </StackPanel>
 
         <GroupBox Grid.Column="2"

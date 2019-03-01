@@ -76,7 +76,7 @@
         private void Update()
         {
             this.Files = GetFiles(this.Directories);
-
+            CommandManager.InvalidateRequerySuggested();
             if (this.Directories.Source.Directory?.FullName != this.settings.SourceDirectory ||
                 this.Directories.Target.Directory?.FullName != this.settings.TargetDirectory)
             {
