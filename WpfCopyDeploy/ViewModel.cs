@@ -75,38 +75,7 @@
 
         private void Update()
         {
-            if (this.Directories.Source.Directory is DirectoryInfo source &&
-                source.Exists &&
-                this.Directories.Target.Directory is DirectoryInfo target &&
-                target.Exists)
-            {
-                var files = new ObservableCollection<Files>();
-                foreach (var sourceFile in GetFiles(source))
-                {
-                    files.Add(new Files(
-                        sourceFile,
-                        new FileInfo(sourceFile.FullName.Replace(source.FullName, target.FullName)),
-                        target));
-                }
-
-
-                foreach (var targetFile in GetFiles(target))
-                {
-                    if (files.All(x => x.Target.FullName != targetFile.FullName))
-                    {
-                        files.Add(new Files(
-                            new FileInfo(targetFile.FullName.Replace(target.FullName, source.FullName)),
-                            targetFile,
-                            target));
-                    }
-                }
-
-                this.Files = new ReadOnlyObservableCollection<Files>(files);
-            }
-            else
-            {
-                this.Files = EmptyFiles;
-            }
+            this.Files = GetFiles(this.Directories);
 
             if (this.Directories.Source.Directory?.FullName != this.settings.SourceDirectory ||
                 this.Directories.Target.Directory?.FullName != this.settings.TargetDirectory)
@@ -114,26 +83,6 @@
                 this.settings.SourceDirectory = this.Directories.Source.Directory?.FullName;
                 this.settings.TargetDirectory = this.Directories.Target.Directory?.FullName;
                 AppData.Save(this.settings);
-            }
-
-            IEnumerable<FileInfo> GetFiles(DirectoryInfo directory)
-            {
-                foreach (var file in directory.EnumerateFiles())
-                {
-                    yield return file;
-
-                    if (file.Extension == ".dll" ||
-                        file.Extension == ".exe")
-                    {
-                        foreach (var satellite in directory.EnumerateFiles($"{Path.GetFileNameWithoutExtension(file.FullName)}.resources.dll", SearchOption.AllDirectories))
-                        {
-                            if (satellite.Directory?.Parent?.FullName == directory.FullName)
-                            {
-                                yield return satellite;
-                            }
-                        }
-                    }
-                }
             }
         }
 
@@ -155,6 +104,73 @@
                 if (file.ShouldDelete)
                 {
                     file.Delete();
+                }
+            }
+        }
+
+        private static ReadOnlyObservableCollection<Files> GetFiles(Directories directories)
+        {
+            if (directories.Source.Directory is DirectoryInfo source &&
+                source.Exists &&
+                directories.Target.Directory is DirectoryInfo target &&
+                target.Exists)
+            {
+                var files = new ObservableCollection<Files>();
+                foreach (var sourceFile in GetFiles(source))
+                {
+                    files.Add(new Files(
+                        sourceFile,
+                        new FileInfo(sourceFile.FullName.Replace(source.FullName, target.FullName)),
+                        target));
+                }
+
+                foreach (var targetFile in GetFiles(target))
+                {
+                    if (files.All(x => x.Target.FullName != targetFile.FullName))
+                    {
+                        files.Add(new Files(
+                            new FileInfo(targetFile.FullName.Replace(target.FullName, source.FullName)),
+                            targetFile,
+                            target));
+                    }
+                }
+
+                return new ReadOnlyObservableCollection<Files>(files);
+            }
+            else
+            {
+                return EmptyFiles;
+            }
+
+            IEnumerable<FileInfo> GetFiles(DirectoryInfo directory)
+            {
+                var sattelites = GetSattelites(directory).ToArray();
+                foreach (var file in directory.EnumerateFiles())
+                {
+                    yield return file;
+
+                    if (file.Extension == ".dll" ||
+                        file.Extension == ".exe")
+                    {
+                        foreach (var sattelite in sattelites)
+                        {
+                            if (sattelite.Name == $"{Path.GetFileNameWithoutExtension(file.FullName)}.resources.dll")
+                            {
+                                yield return sattelite;
+                            }
+                        }
+                    }
+                }
+            }
+
+            IEnumerable<FileInfo> GetSattelites(DirectoryInfo directory)
+            {
+                foreach (var satellite in directory.EnumerateFiles($"*.resources.dll", SearchOption.AllDirectories))
+                {
+                    if (satellite.Directory?.Parent?.FullName == directory.FullName)
+                    {
+                        yield return satellite;
+                    }
                 }
             }
         }
