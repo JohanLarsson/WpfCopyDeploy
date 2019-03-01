@@ -26,7 +26,7 @@
         [Test]
         public void WhenEmpty()
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var target = Directory.CreateSubdirectory("Target");
@@ -42,7 +42,7 @@
         [TestCase("Foo.dll")]
         public void WhenSourceOnly(string fileName)
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var sourceFile = source.CreateFile(fileName);
@@ -63,7 +63,7 @@
         [TestCase("Foo.dll")]
         public void WhenBackingUp(string fileName)
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var sourceFile = source.CreateFile(fileName, "Source");
@@ -89,7 +89,7 @@
         [TestCase("Foo.dll", "Foo.resources.dll")]
         public void WhenSatelliteAssemblies(string fileName, string resourceName)
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var sourceFile = source.CreateFile(fileName, "Source");
@@ -114,7 +114,7 @@
         [TestCase("Foo.dll", "Foo.resources.dll")]
         public void WhenBackingUpSatelliteAssemblies(string fileName, string resourceName)
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var sourceFile = source.CreateFile(fileName, "Source");

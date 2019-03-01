@@ -27,7 +27,7 @@
             var source = Directory.CreateSubdirectory("Source");
             var target = Directory.CreateSubdirectory("Target");
             AppData.Save(new AppData.Settings { SourceDirectory = source.FullName, TargetDirectory = target.FullName });
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 Assert.AreEqual(source.FullName, vm.Directories.Source.Directory.FullName);
                 Assert.AreEqual(target.FullName, vm.Directories.Target.Directory.FullName);
@@ -40,7 +40,7 @@
         {
             var source = Directory.CreateSubdirectory("Source");
             var target = Directory.CreateSubdirectory("Target");
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 vm.Directories.Source.Directory = source;
                 vm.Directories.Target.Directory = target;

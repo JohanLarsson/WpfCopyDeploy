@@ -26,7 +26,7 @@
         [Test]
         public void WhenEmpty()
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var target = Directory.CreateSubdirectory("Target");
@@ -40,7 +40,7 @@
         [TestCase("Foo.dll")]
         public void WhenNoBackups(string fileName)
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var target = Directory.CreateSubdirectory("Target");
@@ -65,7 +65,7 @@
         [TestCase("Foo.dll")]
         public void Twice(string fileName)
         {
-            using (var vm = new ViewModel(Scheduler.Immediate))
+            using (var vm = new ViewModel())
             {
                 var source = Directory.CreateSubdirectory("Source");
                 var target = Directory.CreateSubdirectory("Target");
