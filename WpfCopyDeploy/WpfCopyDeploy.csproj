@@ -60,11 +60,11 @@
     <Compile Include="Converters\BoolToStringConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="DirectoryWatcher.cs" />
-    <Compile Include="Scroll.cs" />
+    <Compile Include="Wpf\Scroll.cs" />
     <Compile Include="Directories.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="Converters\DirectoryInfoStringConverter.cs" />
-    <Compile Include="RelayCommand.cs" />
+    <Compile Include="Wpf\RelayCommand.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
