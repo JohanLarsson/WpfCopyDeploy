@@ -4,18 +4,11 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Reactive.Concurrency;
     using NUnit.Framework;
 
     public class CopyFilesCommandTests
     {
-        private static DirectoryInfo Directory => new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests")).CreateIfNotExists();
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            Settings.UseTemp();
-        }
+        private static DirectoryInfo Directory => new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests", nameof(CopyFilesCommandTests))).CreateIfNotExists();
 
         [TearDown]
         public void TearDown()

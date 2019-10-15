@@ -2,18 +2,11 @@
 {
     using System.IO;
     using System.Linq;
-    using System.Reactive.Concurrency;
     using NUnit.Framework;
 
     public class ViewModelTests
     {
-        private static readonly DirectoryInfo Directory = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests")).CreateIfNotExists();
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            Settings.UseTemp();
-        }
+        private static readonly DirectoryInfo Directory = new DirectoryInfo(Path.Combine(Path.GetTempPath(), "WpfCopyDeploy.Tests", nameof(ViewModelTests))).CreateIfNotExists();
 
         [TearDown]
         public void TearDown()
