@@ -174,12 +174,10 @@
 
             IEnumerable<FileInfo> GetSatellites(DirectoryInfo directory)
             {
-                foreach (var satellite in directory.EnumerateFiles($"*.resources.dll", SearchOption.AllDirectories))
+                foreach (var satellite in directory.GetDirectories()
+                                                   .SelectMany(x => x.EnumerateFiles($"*.resources.dll", SearchOption.TopDirectoryOnly)))
                 {
-                    if (satellite.Directory?.Parent?.FullName == directory.FullName)
-                    {
-                        yield return satellite;
-                    }
+                    yield return satellite;
                 }
             }
         }
