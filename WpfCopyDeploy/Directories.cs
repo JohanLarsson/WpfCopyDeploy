@@ -7,25 +7,15 @@
 
     public sealed class Directories : INotifyPropertyChanged, System.IDisposable
     {
-        public Directories(string sourceDirectory, string targetDirectory)
+        public Directories(DirectoryInfo? source, DirectoryInfo? target)
         {
-            this.Source = new DirectoryWatcher(DirOrNull(sourceDirectory));
-            this.Target = new DirectoryWatcher(DirOrNull(targetDirectory));
+            this.Source = new DirectoryWatcher(source);
+            this.Target = new DirectoryWatcher(target);
             this.OpenSourceCommand = new RelayCommand(this.OpenSource);
             this.OpenTargetCommand = new RelayCommand(this.OpenTarget);
-
-            DirectoryInfo DirOrNull(string path)
-            {
-                if (string.IsNullOrWhiteSpace(path))
-                {
-                    return null;
-                }
-
-                return new DirectoryInfo(path);
-            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand OpenSourceCommand { get; }
 
@@ -41,7 +31,7 @@
             this.Target.Dispose();
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -19,7 +19,9 @@
 
         public ViewModel()
         {
-            this.Directories = new Directories(this.settings.SourceDirectory, this.settings.TargetDirectory);
+            this.Directories = new Directories(
+                DirOrNull(this.settings.SourceDirectory),
+                DirOrNull(this.settings.TargetDirectory));
             this.files = EmptyFiles;
             this.CopyFilesCommand = new RelayCommand(this.CopyFiles, _ => this.Files.Any(x => x.ShouldCopy));
             this.DeleteFilesCommand = new RelayCommand(this.DeleteFiles, _ => this.Files.Any(x => x.ShouldDelete));
@@ -36,9 +38,19 @@
                     h => watcher.Changed += h,
                     h => watcher.Changed -= h);
             }
+
+            DirectoryInfo? DirOrNull(string? path)
+            {
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    return null;
+                }
+
+                return new DirectoryInfo(path);
+            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ReadOnlyObservableCollection<Files> Files
         {
@@ -67,7 +79,7 @@
             this.disposable?.Dispose();
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -109,10 +121,8 @@
 
         private static ReadOnlyObservableCollection<Files> GetFiles(Directories directories)
         {
-            if (directories.Source.Directory is DirectoryInfo source &&
-                source.Exists &&
-                directories.Target.Directory is DirectoryInfo target &&
-                target.Exists)
+            if (directories.Source.Directory is { Exists: true } source &&
+                directories.Target.Directory is { Exists: true } target)
             {
                 var files = new ObservableCollection<Files>();
                 foreach (var sourceFile in GetFiles(source))
@@ -143,7 +153,7 @@
 
             IEnumerable<FileInfo> GetFiles(DirectoryInfo directory)
             {
-                var sattelites = GetSattelites(directory).ToArray();
+                var satellites = GetSatellites(directory).ToArray();
                 foreach (var file in directory.EnumerateFiles())
                 {
                     yield return file;
@@ -151,18 +161,18 @@
                     if (file.Extension == ".dll" ||
                         file.Extension == ".exe")
                     {
-                        foreach (var sattelite in sattelites)
+                        foreach (var satellite in satellites)
                         {
-                            if (sattelite.Name == $"{Path.GetFileNameWithoutExtension(file.FullName)}.resources.dll")
+                            if (satellite.Name == $"{Path.GetFileNameWithoutExtension(file.FullName)}.resources.dll")
                             {
-                                yield return sattelite;
+                                yield return satellite;
                             }
                         }
                     }
                 }
             }
 
-            IEnumerable<FileInfo> GetSattelites(DirectoryInfo directory)
+            IEnumerable<FileInfo> GetSatellites(DirectoryInfo directory)
             {
                 foreach (var satellite in directory.EnumerateFiles($"*.resources.dll", SearchOption.AllDirectories))
                 {

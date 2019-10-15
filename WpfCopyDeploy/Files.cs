@@ -18,7 +18,7 @@
             this.DeleteCommand = new RelayCommand(_ => this.Delete(), _ => this.ShouldDelete);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public FileInfo Source { get; }
 
@@ -36,7 +36,7 @@
 
         public bool ShouldDelete => !this.Source.Exists;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

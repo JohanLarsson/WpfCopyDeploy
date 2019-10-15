@@ -31,8 +31,7 @@
                 SettingsFile.Delete();
             }
 
-            if (SettingsFile.Directory is DirectoryInfo directory &&
-                !directory.Exists)
+            if (SettingsFile.Directory is { Exists: true } directory)
             {
                 directory.Create();
             }
@@ -47,9 +46,9 @@
         public class Settings
 #pragma warning restore INPC001 // The class has mutable properties and should implement INotifyPropertyChanged.
         {
-            public string SourceDirectory { get; set; }
+            public string? SourceDirectory { get; set; }
 
-            public string TargetDirectory { get; set; }
+            public string? TargetDirectory { get; set; }
         }
     }
 }

@@ -27,6 +27,5 @@
         {
             return (Geometry)element.GetValue(GeometryProperty);
         }
-
     }
 }

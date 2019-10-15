@@ -10,13 +10,13 @@
     [MarkupExtensionReturnType(typeof(BoolToBrushConverter))]
     public class BoolToBrushConverter : MarkupExtension, IValueConverter
     {
-        public Brush WhenTrue { get; set; }
+        public Brush? WhenTrue { get; set; }
 
-        public Brush WhenFalse { get; set; }
+        public Brush? WhenFalse { get; set; }
 
         public override object ProvideValue(IServiceProvider serviceProvider) => this;
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is bool b)
             {

@@ -9,7 +9,7 @@
     {
         private readonly FileSystemWatcher watcher;
 
-        public DirectoryWatcher(DirectoryInfo directory)
+        public DirectoryWatcher(DirectoryInfo? directory)
         {
             this.watcher = new FileSystemWatcher { Filter = "*.*" };
             this.watcher.Changed += (_, e) => this.Changed?.Invoke(this, e);
@@ -19,16 +19,16 @@
             this.Directory = directory;
         }
 
-        public event EventHandler Changed;
+        public event EventHandler? Changed;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public DirectoryInfo Directory
+        public DirectoryInfo? Directory
         {
             get => this.watcher.EnableRaisingEvents ? new DirectoryInfo(this.watcher.Path) : null;
             set
             {
-                if (value is DirectoryInfo directory &&
+                if (value is { } directory &&
                     System.IO.Directory.Exists(directory.FullName))
                 {
                     this.watcher.Path = directory.FullName;
@@ -49,7 +49,7 @@
             this.watcher.Dispose();
         }
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
