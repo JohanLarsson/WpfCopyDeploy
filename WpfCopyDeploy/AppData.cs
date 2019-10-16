@@ -31,7 +31,7 @@
                 SettingsFile.Delete();
             }
 
-            if (SettingsFile.Directory is { Exists: true } directory)
+            if (SettingsFile.Directory is { Exists: false } directory)
             {
                 directory.Create();
             }
