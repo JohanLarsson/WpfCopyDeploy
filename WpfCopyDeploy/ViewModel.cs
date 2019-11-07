@@ -39,7 +39,7 @@
                     h => watcher.Changed -= h);
             }
 
-            DirectoryInfo? DirOrNull(string? path)
+            static DirectoryInfo? DirOrNull(string? path)
             {
                 if (string.IsNullOrWhiteSpace(path))
                 {
@@ -151,7 +151,7 @@
                 return EmptyFiles;
             }
 
-            IEnumerable<FileInfo> GetFiles(DirectoryInfo directory)
+            static IEnumerable<FileInfo> GetFiles(DirectoryInfo directory)
             {
                 var satellites = GetSatellites(directory).ToArray();
                 foreach (var file in directory.EnumerateFiles())
@@ -172,7 +172,7 @@
                 }
             }
 
-            IEnumerable<FileInfo> GetSatellites(DirectoryInfo directory)
+            static IEnumerable<FileInfo> GetSatellites(DirectoryInfo directory)
             {
                 foreach (var satellite in directory.GetDirectories()
                                                    .SelectMany(x => x.EnumerateFiles($"*.resources.dll", SearchOption.TopDirectoryOnly)))
