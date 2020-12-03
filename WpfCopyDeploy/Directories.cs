@@ -36,7 +36,7 @@
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void OpenSource(object _)
+        private void OpenSource(object? _)
         {
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             if (dialog.ShowDialog() == true)
@@ -45,7 +45,7 @@
             }
         }
 
-        private void OpenTarget(object _)
+        private void OpenTarget(object? _)
         {
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             if (dialog.ShowDialog() == true)

@@ -14,7 +14,7 @@
         /// <summary>Helper for setting <see cref="GeometryProperty"/> on <paramref name="element"/>.</summary>
         /// <param name="element"><see cref="FrameworkElement"/> to set <see cref="GeometryProperty"/> on.</param>
         /// <param name="value">Geometry property value.</param>
-        public static void SetGeometry(this FrameworkElement element, Geometry value)
+        public static void SetGeometry(this FrameworkElement element, Geometry? value)
         {
             element.SetValue(GeometryProperty, value);
         }
@@ -23,9 +23,9 @@
         /// <param name="element"><see cref="FrameworkElement"/> to read <see cref="GeometryProperty"/> from.</param>
         /// <returns>Geometry property value.</returns>
         [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
-        public static Geometry GetGeometry(this FrameworkElement element)
+        public static Geometry? GetGeometry(this FrameworkElement element)
         {
-            return (Geometry)element.GetValue(GeometryProperty);
+            return (Geometry?)element.GetValue(GeometryProperty);
         }
     }
 }

@@ -61,9 +61,9 @@
 
         internal void Delete()
         {
-            if (this.Target.Exists)
+            if (this.Target is { Directory: { } directory, Exists: true })
             {
-                var backupTarget = new FileInfo(Path.Combine(this.Target.Directory.FullName.Replace(this.TargetDirectory.FullName, BackUpDir().FullName), this.Target.Name));
+                var backupTarget = new FileInfo(Path.Combine(directory.FullName.Replace(this.TargetDirectory.FullName, BackUpDir().FullName), this.Target.Name));
                 if (backupTarget.Exists)
                 {
                     backupTarget.Delete();

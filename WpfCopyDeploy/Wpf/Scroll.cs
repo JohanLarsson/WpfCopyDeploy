@@ -15,13 +15,13 @@
         /// <summary>Helper for setting <see cref="GroupProperty"/> on <paramref name="scrollViewer"/>.</summary>
         /// <param name="scrollViewer"><see cref="ScrollViewer"/> to set <see cref="GroupProperty"/> on.</param>
         /// <param name="group">Group property value.</param>
-        public static void SetGroup(ScrollViewer scrollViewer, string @group) => scrollViewer.SetValue(GroupProperty, @group);
+        public static void SetGroup(ScrollViewer scrollViewer, string? @group) => scrollViewer.SetValue(GroupProperty, @group);
 
         /// <summary>Helper for getting <see cref="GroupProperty"/> from <paramref name="scrollViewer"/>.</summary>
         /// <param name="scrollViewer"><see cref="ScrollViewer"/> to read <see cref="GroupProperty"/> from.</param>
         /// <returns>Group property value.</returns>
         [AttachedPropertyBrowsableForType(typeof(ScrollViewer))]
-        public static string GetGroup(ScrollViewer scrollViewer) => (string)scrollViewer.GetValue(GroupProperty);
+        public static string? GetGroup(ScrollViewer scrollViewer) => (string?)scrollViewer.GetValue(GroupProperty);
 
         /// <summary>
         /// Occurs, when the GroupProperty has changed.

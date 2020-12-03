@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Runtime.Serialization;
     using System.Xml.Serialization;
 
     public static class AppData
@@ -14,10 +15,9 @@
             SettingsFile.Refresh();
             if (SettingsFile.Exists)
             {
-                using (var stream = SettingsFile.OpenRead())
-                {
-                    return (Settings)Serializer.Deserialize(stream);
-                }
+                using var stream = SettingsFile.OpenRead();
+                return (Settings?)Serializer.Deserialize(stream) ??
+                       throw new SerializationException("Could not deserialize setting");
             }
 
             return new Settings();
@@ -36,10 +36,8 @@
                 directory.Create();
             }
 
-            using (var stream = SettingsFile.OpenWrite())
-            {
-                Serializer.Serialize(stream, settings);
-            }
+            using var stream = SettingsFile.OpenWrite();
+            Serializer.Serialize(stream, settings);
         }
 
 #pragma warning disable INPC001 // The class has mutable properties and should implement INotifyPropertyChanged.
