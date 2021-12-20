@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="IDisposableAnalyzers" Version="4.0.1" PrivateAssets="all" />
-    <PackageReference Include="Ookii.Dialogs" Version="5.0.0" />
+    <PackageReference Include="Ookii.Dialogs" Version="5.0.1" />
     <PackageReference Include="PropertyChangedAnalyzers" Version="4.0.0" PrivateAssets="all" />
     <PackageReference Include="ReflectionAnalyzers" Version="0.3.0" PrivateAssets="all" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
