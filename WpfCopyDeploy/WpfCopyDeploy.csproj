@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <UseWpf>true</UseWpf>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -10,7 +10,7 @@
     <Description>Small helper for x-copy style deployments.</Description>
     <Authors>Johan Larsson</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <AssemblyVersion>0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup>
