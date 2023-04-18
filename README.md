@@ -1,7 +1,6 @@
 # WpfCopyDeploy
 
 [![ci](https://github.com/JohanLarsson/WpfCopyDeploy/actions/workflows/ci.yml/badge.svg)](https://github.com/JohanLarsson/WpfCopyDeploy/actions/workflows/ci.yml)
-[![Build Status](https://dev.azure.com/johan-larsson/WpfCopyDeploy/_apis/build/status/WpfCopyDeploy-CI?branchName=master)](https://dev.azure.com/johan-larsson/WpfCopyDeploy/_build/latest?definitionId=13&branchName=master)
 
 Small helper for x-copy deployments.
 
